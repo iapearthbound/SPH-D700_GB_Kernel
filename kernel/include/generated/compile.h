@@ -1,9 +1,9 @@
-/* This file is auto generated, version 3 */
+/* This file is auto generated, version SAMURAI.TW.BML.SEPPUKU */
 /*  PREEMPT */
 #define UTS_MACHINE "arm"
-#define UTS_VERSION "#3 PREEMPT Thu Oct 20 21:50:09 CDT 2011"
-#define LINUX_COMPILE_TIME "21:50:09"
-#define LINUX_COMPILE_BY "bbelos"
-#define LINUX_COMPILE_HOST "lappy"
+#define UTS_VERSION "#SAMURAI.TW.BML.SEPPUKU PREEMPT Tue Jan 17 08:05:05 PST 2012"
+#define LINUX_COMPILE_TIME "08:05:05"
+#define LINUX_COMPILE_BY "earthbound"
+#define LINUX_COMPILE_HOST "ubuntu"
 #define LINUX_COMPILE_DOMAIN "(none)"
-#define LINUX_COMPILER "gcc version 4.4.1 (Sourcery G++ Lite 2009q3-67) "
+#define LINUX_COMPILER "gcc version 4.4.3 (GCC) "

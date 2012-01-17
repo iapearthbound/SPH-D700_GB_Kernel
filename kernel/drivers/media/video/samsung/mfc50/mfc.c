@@ -85,7 +85,7 @@ static int mfc_open(struct inode *inode, struct file *file)
 		}
 
 #ifdef CONFIG_DVFS_LIMIT
-		s5pv210_lock_dvfs_high_level(DVFS_LOCK_TOKEN_1, L8); //400MHz
+		s5pv210_lock_dvfs_high_level(DVFS_LOCK_TOKEN_1, L8); //800MHz
 #endif
 		clk_enable(mfc_sclk);
 
@@ -415,14 +415,12 @@ static int mfc_ioctl(struct inode *inode, struct file *file, unsigned int cmd, u
 
 		break;
 
-       case IOCTL_MFC_BUF_CACHE:
-		mutex_lock(&mfc_mutex);
-		
-		mfc_ctx->buf_type = in_param.args.buf_type;
-
-		mutex_unlock(&mfc_mutex);
-		break;
-		
+		case IOCTL_MFC_BUF_CACHE:
+    			mutex_lock(&mfc_mutex);
+    
+    			mfc_ctx->buf_type = in_param.args.buf_type;
+			mutex_unlock(&mfc_mutex);
+    		break;
 	default:
 		mfc_err("Requested ioctl command is not defined. (ioctl cmd=0x%08x)\n", cmd);
 		in_param.ret_code  = MFCINST_ERR_INVALID_PARAM;
@@ -471,27 +469,27 @@ static int mfc_mmap(struct file *filp, struct vm_area_struct *vma)
 	mfc_ctx->port0_mmap_size = (vir_size / 2);
 
 	if (mfc_ctx->buf_type == MFC_BUFFER_CACHE) {
-		vma->vm_flags |= VM_RESERVED | VM_IO;
-	 	/*
- 	  	* port0 mapping for stream buf & frame buf (chroma + MV)
- 	  	*/
- 	  	page_frame_no = __phys_to_pfn(mfc_get_port0_buff_paddr());
-	 	if (remap_pfn_range(vma, vma->vm_start, page_frame_no,
-	 		mfc_ctx->port0_mmap_size, vma->vm_page_prot)) {
-	 		 mfc_err("mfc remap port0 error\n");
-	 		 return -EAGAIN;
-	 	}
-		vma->vm_flags |= VM_RESERVED | VM_IO;
-		/*
-	 	* port1 mapping for frame buf (luma)
-	 	*/
-	 	page_frame_no = __phys_to_pfn(mfc_get_port1_buff_paddr());
-		if (remap_pfn_range(vma, vma->vm_start + mfc_ctx->port0_mmap_size,
-			page_frame_no, vir_size - mfc_ctx->port0_mmap_size, vma->vm_page_prot)) {
-			mfc_err("mfc remap port1 error\n");
-			return -EAGAIN;
-		 }
-	} else {
+    		vma->vm_flags |= VM_RESERVED | VM_IO;
+     	/*
+         * port0 mapping for stream buf & frame buf (chroma + MV)
+         */
+       		page_frame_no = __phys_to_pfn(mfc_get_port0_buff_paddr());
+     	if (remap_pfn_range(vma, vma->vm_start, page_frame_no,
+       		mfc_ctx->port0_mmap_size, vma->vm_page_prot)) {
+        	mfc_err("mfc remap port0 error\n");
+        	return -EAGAIN;
+     	}
+    	vma->vm_flags |= VM_RESERVED | VM_IO;
+    	/*
+     	 * port1 mapping for frame buf (luma)
+     	 */
+     		page_frame_no = __phys_to_pfn(mfc_get_port1_buff_paddr());
+    	if (remap_pfn_range(vma, vma->vm_start + mfc_ctx->port0_mmap_size,
+      		page_frame_no, vir_size - mfc_ctx->port0_mmap_size, vma->vm_page_prot)) {
+      		mfc_err("mfc remap port1 error\n");
+      		return -EAGAIN;
+     }
+  } else {
 	vma->vm_flags |= VM_RESERVED | VM_IO;
 	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
 	/*
@@ -515,7 +513,7 @@ static int mfc_mmap(struct file *filp, struct vm_area_struct *vma)
 		mfc_err("mfc remap port1 error\n");
 		return -EAGAIN;
 	}
-	}	
+}
 
 	mfc_debug("virtual requested mem = %ld, physical reserved data mem = %ld\n", vir_size, phy_size);
 

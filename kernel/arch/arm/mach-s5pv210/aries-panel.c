@@ -2557,8 +2557,9 @@ struct s5p_panel_data aries_panel_data = {
 		*/
 		.mult = {
 			2055448640U,
-			1932735200U,
-			2341779680U,
+      			1932735200U,
+      			2341779680U,
+
 		},
 		.rshift = 31,
 	},

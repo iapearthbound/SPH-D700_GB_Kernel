@@ -201,6 +201,7 @@ deps_config := \
 	sound/s5p-rp/Kconfig \
 	sound/oss/Kconfig \
 	sound/soc/codecs/Kconfig \
+	sound/soc/codecs/Kconfig.voodoo \
 	sound/soc/txx9/Kconfig \
 	sound/soc/sh/Kconfig \
 	sound/soc/s6000/Kconfig \
@@ -246,7 +247,6 @@ deps_config := \
 	drivers/video/omap2/Kconfig \
 	drivers/video/omap/Kconfig \
 	drivers/video/geode/Kconfig \
-	drivers/video/samsung_mipi/Kconfig \
 	drivers/video/samsung/Kconfig \
 	drivers/gpu/pvr/Kconfig \
 	drivers/gpu/drm/radeon/Kconfig \

@@ -48,13 +48,13 @@ fi
 TARGET_LOCALE="vzw"
 
 #uncomment to add custom version string
-CUSTOMVERSION="Shadow-EI22_v1.0"
+CUSTOMVERSION="SAMURAI.TW.BML.SEPPUKU"
 export KBUILD_BUILD_VERSION=$CUSTOMVERSION
 LOCALVERSION_STRING="-$CUSTOMVERSION"
 
 DEFCONFIG_STRING=victory_8G_defconfig
 
-TOOLCHAIN=/home/bbelos/toolchain/arm-eabi-4.4.3/bin
+TOOLCHAIN=/home/earthbound/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin
 TOOLCHAIN_PREFIX=arm-eabi-
 
 #TOOLCHAIN=/usr/local/toolchain/arm-2009q3/bin
@@ -111,7 +111,20 @@ BUILD_KERNEL()
 		make ARCH=arm $DEFCONFIG_STRING
 #		make -j$CPU_JOB_NUM ARCH=arm CROSS_COMPILE=$TOOLCHAIN/$TOOLCHAIN_PREFIX
 		make V=1 -j$CPU_JOB_NUM ARCH=arm CROSS_COMPILE=$TOOLCHAIN/$TOOLCHAIN_PREFIX LOCALVERSION=$LOCALVERSION_STRING 2>&1 | tee make.out
+}
+
+MOVE_IMAGE()
+{
+	echo "************************************************************"
+	echo "* MOVE_IMAGE                                               *"
+	echo "************************************************************"
+	echo
 	popd
+	if [ -f ./1.BML/zImage ] ; then
+		echo "removing old zImage"
+		rm -f ./1.BML/zImage
+	fi
+	cp ./kernel/arch/arm/boot/zImage ./1.BML/zImage
 }
 
 # print title
@@ -151,6 +164,7 @@ PRINT_TITLE
 #BUILD_MODULE
 CLEAN_ZIMAGE
 BUILD_KERNEL
+MOVE_IMAGE
 END_TIME=`date +%s`
 let "ELAPSED_TIME=$END_TIME-$START_TIME"
 echo "Total compile time is $ELAPSED_TIME seconds"
